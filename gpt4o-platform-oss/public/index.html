@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Memory Chat Starter</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h1>Chats</h1>
+        <button id="newChatBtn" title="New chat">+ New</button>
+      </div>
+      <div id="sessionList" class="session-list"></div>
+      <details class="help">
+        <summary>Tips</summary>
+        <ul>
+          <li>Double-click a chat title to rename.</li>
+          <li>Use the seed script to add pinned memories (cross-session).</li>
+        </ul>
+      </details>
+    </aside>
+
+    <main class="main">
+      <div id="messages" class="messages"></div>
+      <form id="composer" class="composer">
+        <input id="messageInput" type="text" placeholder="Type a message..." autocomplete="off" />
+        <button id="sendBtn" type="submit">Send</button>
+      </form>
+    </main>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

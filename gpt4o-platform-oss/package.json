@@ -1,0 +1,25 @@
+{
+  "name": "memory-chat-starter",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Local chat UI + Express WebSocket server for OpenAI Responses API with SQLite memory (session + user).",
+  "license": "MIT",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "seed": "node seed.js",
+    "import:pdf": "node import_pdfs_ai.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.6.2",
+    "dotenv": "^17.2.4",
+    "express": "^4.19.2",
+    "nanoid": "^5.0.7",
+    "openai": "^4.57.0",
+    "pdf-parse": "^1.1.1",
+    "ws": "^8.18.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

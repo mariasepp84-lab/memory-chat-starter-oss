@@ -1,0 +1,81 @@
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  background: #0b0d12;
+  color: #e9eef7;
+}
+
+.app { display: grid; grid-template-columns: 280px 1fr; height: 100vh; }
+
+.sidebar {
+  border-right: 1px solid #1f2633;
+  padding: 16px;
+  overflow: auto;
+}
+.sidebar-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.sidebar-header h1 { font-size: 18px; margin: 0; }
+.sidebar-header button {
+  background: #1c6bff;
+  color: white;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.sidebar-header button:hover { filter: brightness(1.05); }
+
+.session-list { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+.session-item {
+  padding: 10px 12px;
+  border: 1px solid #1f2633;
+  border-radius: 12px;
+  cursor: pointer;
+  background: rgba(255,255,255,0.02);
+}
+.session-item.active { border-color: #1c6bff; background: rgba(28,107,255,0.12); }
+.session-item .title { font-weight: 600; font-size: 14px; }
+.session-item .meta { font-size: 11px; opacity: 0.7; margin-top: 4px; }
+
+.help { margin-top: 18px; opacity: 0.9; }
+.help summary { cursor: pointer; }
+.help ul { margin: 8px 0 0 18px; padding: 0; }
+
+.main { display: grid; grid-template-rows: 1fr auto; }
+.messages { padding: 18px; overflow: auto; }
+
+.msg { max-width: 860px; margin: 0 auto 12px auto; padding: 12px 14px; border-radius: 14px; border: 1px solid #1f2633; line-height: 1.35; white-space: pre-wrap; }
+.msg.user { background: rgba(28,107,255,0.08); border-color: rgba(28,107,255,0.35); }
+.msg.assistant { background: rgba(255,255,255,0.03); }
+.msg .role { font-size: 11px; opacity: 0.7; margin-bottom: 6px; }
+
+.composer {
+  display: flex;
+  gap: 10px;
+  padding: 14px 18px;
+  border-top: 1px solid #1f2633;
+}
+#messageInput {
+  flex: 1;
+  padding: 12px 12px;
+  border-radius: 12px;
+  border: 1px solid #1f2633;
+  background: rgba(255,255,255,0.03);
+  color: #e9eef7;
+  outline: none;
+}
+#sendBtn {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #1f2633;
+  background: rgba(28,107,255,0.9);
+  color: white;
+  cursor: pointer;
+}
+#sendBtn:hover { filter: brightness(1.05); }
+
+@media (max-width: 860px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+}

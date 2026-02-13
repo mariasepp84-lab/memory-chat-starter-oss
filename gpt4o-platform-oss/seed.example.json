@@ -1,0 +1,13 @@
+{
+  "profile": {
+    "name": "Example User",
+    "nicknames": ["Example"],
+    "projects": ["DemoApp"],
+    "context": ["Based in Example City", "Prefers concise answers"]
+  },
+  "pinned_memories": [
+    { "text": "The user prefers short, actionable steps.", "kind": "preference", "importance": 5, "pinned": 1 },
+    { "text": "The user is building a local Node.js + SQLite app.", "kind": "project", "importance": 4, "pinned": 1 },
+    { "text": "The user's primary device is a Windows PC.", "kind": "context", "importance": 3, "pinned": 0 }
+  ]
+}
