@@ -1,6 +1,6 @@
-# Memory Chat Starter (OpenAI Responses + SQLite)
+# 4o Memory Chat Starter (OpenAI GPT-4o Responses + SQLite)
 
-A minimal, fully local chat UI + Node/Express server that talks to the **OpenAI Responses API** over WebSockets, with **SQLite-based memory**:
+A minimal, fully local 4o chat UI + Node/Express server that talks to the **OpenAI Responses API** over WebSockets, with **SQLite-based memory**:
 
 - **Session memory**: embeddings stored per chat session (good for “this conversation”).
 - **User memory**: embeddings stored per user across sessions (good for “remember me”).
