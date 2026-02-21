@@ -25,6 +25,27 @@ const server = http.createServer(app);
 // Init DB + OpenAI
 const db = initDb("./data.sqlite");
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+app.post("/tts", async (req, res) => {
+  try {
+    const { text, voice } = req.body;
+
+    // Using the OpenAI Node SDK you already initialized above
+    const audio = await openai.audio.speech.create({
+      model: "gpt-4o-mini-tts",
+      voice: voice || "marin",
+      format: "mp3",
+      input: text || "Test.",
+    });
+
+    res.setHeader("Content-Type", "audio/mpeg");
+
+    // The SDK returns a Response-like object; convert to bytes
+    const arrayBuffer = await audio.arrayBuffer();
+    res.send(Buffer.from(arrayBuffer));
+  } catch (e) {
+    res.status(500).send(String(e));
+  }
+});
 
 // Stores
 const sessionMemoryStore = makeMemoryStore({ db, openai, embedModel: EMBED_MODEL });
