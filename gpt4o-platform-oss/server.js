@@ -23,7 +23,7 @@ app.use(express.static("public"));
 const server = http.createServer(app);
 
 // Init DB + OpenAI
-const db = initDb("./data.sqlite");
+const db = initDb("/data/data.sqlite");
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 app.post("/tts", async (req, res) => {
   try {
