@@ -1,0 +1,9 @@
+{
+  "build": {
+    "builder": "NIXPACKS",
+    "buildCommand": "cd gpt4o-platform-oss && npm install"
+  },
+  "deploy": {
+    "startCommand": "cd gpt4o-platform-oss && node server.js"
+  }
+}
