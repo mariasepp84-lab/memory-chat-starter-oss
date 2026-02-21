@@ -60,10 +60,18 @@ function renderSessions() {
   });
 }
 
+function roleLabel(role) {
+  if (role === "user") return "You";
+  if (role === "assistant") return "Emma";
+  return role;
+}
+
 function appendMsg(role, content) {
   const el = document.createElement("div");
   el.className = `msg ${role}`;
-  el.innerHTML = `<div class="role">${escapeHtml(role)}</div><div class="content">${escapeHtml(content)}</div>`;
+  el.innerHTML =
+    `<div class="role">${escapeHtml(roleLabel(role))}</div>` +
+    `<div class="content">${escapeHtml(content)}</div>`;
   messagesEl.appendChild(el);
   messagesEl.scrollTop = messagesEl.scrollHeight;
   return el;
@@ -137,11 +145,13 @@ async function loadSession(id) {
   activeSessionId = id;
   renderSessions();
   messagesEl.innerHTML = "";
+
   const msgs = await api(`/api/sessions/${id}/messages`);
   msgs.forEach((m) => {
     const el = appendMsg(m.role, m.content);
     if (m.role === "assistant") attachTTSButton(el);
   });
+
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
@@ -187,7 +197,6 @@ composer.addEventListener("submit", async (e) => {
   if (!text) return;
   if (!activeSessionId) await createSession();
 
-  // If this chat is still called "New chat", auto-rename to the first user message.
   const current = sessions.find((s) => s.id === activeSessionId);
   if (current && (!current.title || current.title === "New chat")) {
     const autoTitle = text.slice(0, 60);
