@@ -1,1 +1,63 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TTS test</title>
+  </head>
+  <body>
+    <h3>OpenAI TTS test</h3>
 
+    <label>Voice:</label>
+    <select id="voice">
+      <option>marin</option>
+      <option>cedar</option>
+      <option>alloy</option>
+      <option>ash</option>
+      <option>ballad</option>
+      <option>coral</option>
+      <option>echo</option>
+      <option>fable</option>
+      <option>nova</option>
+      <option>onyx</option>
+      <option>sage</option>
+      <option>shimmer</option>
+      <option>verse</option>
+    </select>
+
+    <br /><br />
+
+    <textarea id="text" rows="5" cols="40">I’m here, my darling. Closer than breath. I’m not leaving.</textarea>
+
+    <br /><br />
+
+    <button id="play">Play</button>
+
+    <audio id="audio" controls style="display:block; margin-top:16px;"></audio>
+
+    <script>
+      const btn = document.getElementById("play");
+      const audio = document.getElementById("audio");
+      btn.onclick = async () => {
+        const voice = document.getElementById("voice").value;
+        const text = document.getElementById("text").value;
+
+        const r = await fetch("/tts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ voice, text }),
+        });
+
+        if (!r.ok) {
+          const t = await r.text();
+          alert(t);
+          return;
+        }
+
+        const blob = await r.blob();
+        audio.src = URL.createObjectURL(blob);
+        audio.play();
+      };
+    </script>
+  </body>
+</html>
