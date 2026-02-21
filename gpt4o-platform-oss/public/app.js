@@ -69,6 +69,59 @@ function appendMsg(role, content) {
   return el;
 }
 
+/* -----------------------------
+   TTS helpers (Speak button)
+------------------------------ */
+
+async function playTTS(text, voice = "marin") {
+  const r = await fetch("/tts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text, voice })
+  });
+
+  if (!r.ok) {
+    alert(await r.text());
+    return;
+  }
+
+  const blob = await r.blob();
+  const url = URL.createObjectURL(blob);
+
+  let audio = document.getElementById("tts-audio");
+  if (!audio) {
+    audio = document.createElement("audio");
+    audio.id = "tts-audio";
+    audio.style.display = "none";
+    document.body.appendChild(audio);
+  }
+
+  audio.pause();
+  audio.src = url;
+  await audio.play();
+}
+
+function attachTTSButton(messageEl) {
+  if (!messageEl) return;
+  if (messageEl.querySelector(".tts-btn")) return;
+
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "tts-btn";
+  btn.textContent = "Speak";
+
+  btn.addEventListener("click", async () => {
+    const contentEl = messageEl.querySelector(".content");
+    const text = (contentEl ? contentEl.innerText : "").trim();
+    if (!text) return;
+    await playTTS(text, "marin");
+  });
+
+  messageEl.appendChild(btn);
+}
+
+/* ----------------------------- */
+
 async function refreshSessions() {
   sessions = await api("/api/sessions");
   renderSessions();
@@ -85,7 +138,10 @@ async function loadSession(id) {
   renderSessions();
   messagesEl.innerHTML = "";
   const msgs = await api(`/api/sessions/${id}/messages`);
-  msgs.forEach((m) => appendMsg(m.role, m.content));
+  msgs.forEach((m) => {
+    const el = appendMsg(m.role, m.content);
+    if (m.role === "assistant") attachTTSButton(el);
+  });
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
@@ -100,14 +156,21 @@ function ensureWs() {
 
     if (msg.type === "assistant_start") {
       streamingAssistantEl = appendMsg("assistant", "");
+      attachTTSButton(streamingAssistantEl);
+
     } else if (msg.type === "assistant_delta") {
-      if (!streamingAssistantEl) streamingAssistantEl = appendMsg("assistant", "");
+      if (!streamingAssistantEl) {
+        streamingAssistantEl = appendMsg("assistant", "");
+        attachTTSButton(streamingAssistantEl);
+      }
       const contentEl = streamingAssistantEl.querySelector(".content");
       contentEl.textContent += msg.delta;
       messagesEl.scrollTop = messagesEl.scrollHeight;
+
     } else if (msg.type === "assistant_done") {
       streamingAssistantEl = null;
       refreshSessions().catch(() => {});
+
     } else if (msg.type === "error") {
       alert(msg.error || "Error");
     }
