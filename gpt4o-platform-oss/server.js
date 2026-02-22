@@ -11,7 +11,7 @@ import { makeUserMemoryStore } from "./user_memory.js";
 import { SYSTEM_PROMPT } from "./system_prompt.js";
 
 const PORT = Number(process.env.PORT || 8787);
-const MODEL = process.env.MODEL || "gpt-4o";
+const MODEL = process.env.OPENAI_MODEL || "gpt-4.1";
 const EMBED_MODEL = process.env.EMBED_MODEL || "text-embedding-3-small";
 const SUMMARY_EVERY_N = Number(process.env.SUMMARY_EVERY_N_MESSAGES || 30);
 const DEFAULT_USER_ID = (process.env.USER_ID || "default").toString();
@@ -462,9 +462,11 @@ wss.on("connection", (ws) => {
 
     try {
       const stream = await openai.responses.create({
-        model: MODEL,
-        input,
-        stream: true
+  model: MODEL,
+  input,
+  stream: true,
+  temperature: 1.1,
+  max_output_tokens: 800
       });
 
       for await (const event of stream) {
